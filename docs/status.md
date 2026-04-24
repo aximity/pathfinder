@@ -5,27 +5,28 @@
 ---
 
 **Son güncelleme:** 2026-04-25
-**Aktif paket:** Paket 1 — kod ve commit tamam, Ahmet'in **telefon testi bekleniyor**
-**Son commit:** `a049ed5` (feat: bootstrap Paket 1 - project foundation and data access layer)
-**Branch:** `main` (henüz remote'a push'lanmadı — `aximity/pathfinder` GitHub repo'su Ahmet tarafından oluşturulacak)
+**Aktif paket:** Paket 2 — UI İskelet ve Navigation (yeni session açılınca başlanacak)
+**Önceki paket:** Paket 1 — **kapandı**, Ahmet 2026-04-25'te telefon testini onayladı
+**Son commit:** Paket 1 kapanış commit'i (bu session'da atılacak)
+**Branch:** `main`
+**Remote:** `https://github.com/aximity/pathfinder.git` (oluşturuldu, ilk push Ahmet tarafından yapılacak)
 
-**Engel / bekleyen kararlar:**
-- Telefon testi onayı (Ahmet)
-- GitHub'da `aximity/pathfinder` repo oluşturma + ilk push
-- Kaya Palazzo PDF menüsünün gerçek verilerle `menu.json`'a yapıştırılması (52 placeholder yemek var)
+**Bekleyen Ahmet işleri:**
+- `git remote add origin` + `git push -u origin main` (komutlar TODO.md'de hazır)
+- Kaya Palazzo PDF'inden gerçek 52 yemeği `menu.json`'a yapıştırma (Paket 2 öncesi zorunlu değil)
+- Tailwind tema token kararları (semantic renkler + 11 kategori accent) — Paket 2 başlangıcında lazım
+- Mockup 1 son hali (ana sayfa + kategori sayfası)
 
 **Bir sonraki adım:**
-1. Ahmet telefon testini yapar, onaylar
-2. Paket 1 kapanış işleri: `docs/decisions.md`'ye Paket 1 ADR'leri eklenir, `CLAUDE.md` "Aktif paket" → Paket 2
-3. GitHub repo oluşturulur + push
-4. `docs/prompts/paket-2.md` hazırlanır
-5. Yeni session ile Paket 2 başlar
+1. Ahmet `git push` ile repo'yu uzaktaki `aximity/pathfinder`'a yükler
+2. Yeni Claude Code session'u açılır
+3. Session, `docs/prompts/paket-2.md` ile başlatılır
+4. Tema token + mockup 1 hazır olunca Paket 2 işleri başlar
 
-**Son session'da alınan kararlar:**
-- Doc dosyaları kökten `docs/` altına taşındı
-- LICENSE: MIT
-- `menu.json`: 11 gerçek kategori + 7 gerçek + 52 placeholder yemek (toplam 59)
-- Tailwind v4 (`@tailwindcss/vite` plugin) — eski PostCSS yaklaşımı yerine
-- TODO.md / PRD.md / docs/status.md eklendi (MVP.md ve PLAN.md kasıtlı eklenmedi — `docs/packages.md` o işi yapıyor)
+**Paket 1'de alınan kritik kararlar (`docs/decisions.md` ADR-0010 → ADR-0013):**
+- Node 24.14.0 LTS doğrulandı (yükseltme gereksiz)
+- Tailwind CSS v4 + `@tailwindcss/vite` plugin (PostCSS yaklaşımı yerine)
+- `menu.json` Faz 1'de placeholder yaklaşımı (7 gerçek + 52 placeholder = 59) — gerçek veri sonra elle yapıştırılır, kod değişmez
+- Doc tracking dosyaları: TODO.md + PRD.md + docs/status.md (MVP.md ve PLAN.md eklenmedi — `docs/packages.md` o işi yapıyor)
 
 **Açık sorular:** Yok.

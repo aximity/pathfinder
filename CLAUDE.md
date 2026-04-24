@@ -161,9 +161,11 @@ Tüm component'ler hem açık hem koyu modda test edilir. Tailwind `dark:` prefi
 
 ## Aktif paket
 
-**Şu anki paket:** Paket 1 — Temel + Data Layer
+**Şu anki paket:** Paket 2 — UI İskelet ve Navigation
 
-**Referans dosya:** `docs/packages.md`
+**Referans dosya:** `docs/packages.md` (Paket 2 bölümü) · `docs/prompts/paket-2.md` (başlangıç prompt'u)
+
+**Önceki paket:** Paket 1 — kapandı 2026-04-25, telefon testi ve GitHub repo oluşturma onaylı (commit history: `a049ed5`, `63567fe`, ...).
 
 Her paket başında bu bölüm güncellenir. Claude Code paket başlamadan önce ilgili paket tanımını okur ve Ahmet'e Türkçe özet çıkarır, onay bekler.
 
