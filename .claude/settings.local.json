@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "PowerShell(New-Item -Path \"docs\" -ItemType Directory -Force)",
+      "PowerShell(New-Item -Path \"docs\\\\prompts\" -ItemType Directory -Force)",
+      "PowerShell(Move-Item -Path \"architecture.md\" -Destination \"docs\\\\architecture.md\" -Force)",
+      "PowerShell(Move-Item -Path \"packages.md\" -Destination \"docs\\\\packages.md\" -Force)",
+      "PowerShell(Move-Item -Path \"data-schema.md\" -Destination \"docs\\\\data-schema.md\" -Force)",
+      "PowerShell(Move-Item -Path \"decisions.md\" -Destination \"docs\\\\decisions.md\" -Force)",
+      "PowerShell(Move-Item -Path \"paket-1.md\" -Destination \"docs\\\\prompts\\\\paket-1.md\" -Force)",
+      "PowerShell($menu = Get-Content \"src\\\\lib\\\\data\\\\menu.json\" -Raw | ConvertFrom-Json; \"Version: $\\($menu.version\\)\"; \"Categories: $\\($menu.categories.Count\\)\"; \"Dishes: $\\($menu.dishes.Count\\)\"; \"Meta total_categories: $\\($menu.metadata.total_categories\\)\"; \"Meta total_dishes: $\\($menu.metadata.total_dishes\\)\"; \"\"; \"Dishes per category:\"; $menu.dishes | Group-Object category_id | ForEach-Object { \"  $\\($_.Name\\): $\\($_.Count\\)\" }; \"\"; \"Unique dish IDs: $\\(\\($menu.dishes.id | Select-Object -Unique\\).Count\\)\")",
+      "PowerShell(npm install 2>&1)",
+      "PowerShell(npm run check 2>&1)",
+      "PowerShell(npm run build 2>&1)",
+      "PowerShell(\"---\")",
+      "PowerShell(Get-ChildItem -Force | Select-Object Mode, Name | Format-Table -AutoSize | Out-String; \"---\"; Get-ChildItem -Recurse -File -Exclude \"node_modules\" | Where-Object { $_.FullName -notmatch \"node_modules|.svelte-kit|build\" } | ForEach-Object { $_.FullName.Replace\\($PWD.Path + \"\\\\\", \"\"\\) } | Sort-Object)",
+      "PowerShell(git init -b main)",
+      "PowerShell(git add .editorconfig .gitignore .prettierrc .prettierignore CLAUDE.md LICENSE README.md package.json package-lock.json svelte.config.js tsconfig.json vite.config.ts docs src static .claude/settings.local.json)"
+    ]
+  }
+}
