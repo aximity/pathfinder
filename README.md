@@ -58,6 +58,13 @@ Paket başlangıç prompt'ları `docs/prompts/` altındadır:
 
 - Paket 1: [docs/prompts/paket-1.md](docs/prompts/paket-1.md)
 
+**Yeni session açıldığında ilk okunacak dosyalar (sırasıyla):**
+
+1. [CLAUDE.md](CLAUDE.md) — proje kuralları (Claude Code otomatik okur)
+2. [docs/status.md](docs/status.md) — anlık durum, "şu an nerdeyiz" özeti
+3. [TODO.md](TODO.md) — paket bazlı checkbox tracker
+4. [PRD.md](PRD.md) — ürün tanımı, kullanıcılar, başarı kriterleri
+
 ---
 
 ## Klasör yapısı
@@ -66,6 +73,8 @@ Paket başlangıç prompt'ları `docs/prompts/` altındadır:
 pathfinder/
 ├── CLAUDE.md                    # Claude Code'un otomatik okuduğu proje kuralları
 ├── README.md                    # Bu dosya
+├── PRD.md                       # Ürün tanımı (problem, kullanıcı, başarı kriteri)
+├── TODO.md                      # Paket bazlı checkbox tracker
 ├── LICENSE                      # MIT lisansı
 ├── package.json                 # Bağımlılıklar ve scriptler
 ├── svelte.config.js             # SvelteKit + adapter-static ayarı
@@ -75,7 +84,8 @@ pathfinder/
 │   ├── architecture.md          # Mimari kararlar (DAL, faz geçişi vb.)
 │   ├── data-schema.md           # menu.json şeması ve TypeScript tipleri
 │   ├── decisions.md             # ADR — Architecture Decision Records
-│   ├── packages.md              # 4 paketlik yol haritası
+│   ├── packages.md              # 5 paketlik yol haritası
+│   ├── status.md                # Anlık durum (her session sonu güncellenir)
 │   └── prompts/                 # Claude Code başlangıç prompt'ları
 │       └── paket-1.md
 ├── src/

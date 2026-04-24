@@ -173,7 +173,10 @@ Her paket başında bu bölüm güncellenir. Claude Code paket başlamadan önce
 
 | Dosya | İçerik |
 |---|---|
-| `docs/packages.md` | 4 paketin tam tanımı, kabul kriterleri, ertelenmeler |
+| `PRD.md` | Ürün tanımı (problem, kullanıcılar, başarı kriterleri, faz haritası) |
+| `TODO.md` | Paket bazlı canlı checkbox tracker — `[ ]` `[~]` `[T]` `[x]` durum kodları |
+| `docs/status.md` | Anlık durum notu — yeni session "şu an nerdeyiz" 5 saniyede okur |
+| `docs/packages.md` | 5 paketin tam tanımı, kabul kriterleri, ertelenmeler |
 | `docs/data-schema.md` | `menu.json` şeması, TypeScript tipleri, örnek kayıtlar |
 | `docs/architecture.md` | Data access layer, Faz 2 geçiş mimarisi, state yönetimi |
 | `docs/decisions.md` | Mimari karar günlüğü (ADR) |
@@ -186,10 +189,12 @@ Her paket başında bu bölüm güncellenir. Claude Code paket başlamadan önce
 ### Session başı
 
 1. Claude Code `CLAUDE.md`'yi otomatik okur
-2. Aktif paket için `docs/packages.md`'yi okur
-3. İlgili mimari dosyalarını okur (`data-schema.md`, `architecture.md`)
-4. Ahmet'e Türkçe özet çıkarır: "Paket [N]'de şunları yapacağız. Kabul kriterleri şunlar. Scope dışı olanlar şunlar. Başlayayım mı?"
-5. Onay bekler
+2. `docs/status.md`'yi okur — şu an nerdeyiz, hangi engel var, son commit ne?
+3. `TODO.md`'yi okur — `[T]` ve `[~]` durumda olan maddeler ön planda
+4. Aktif paket için `docs/packages.md`'yi okur
+5. İlgili mimari dosyalarını okur (`data-schema.md`, `architecture.md`)
+6. Ahmet'e Türkçe özet çıkarır: "Paket [N]'de şunları yapacağız. Kabul kriterleri şunlar. Scope dışı olanlar şunlar. Başlayayım mı?"
+7. Onay bekler
 
 ### Session içi
 
@@ -203,8 +208,20 @@ Her paket başında bu bölüm güncellenir. Claude Code paket başlamadan önce
 1. Yapılan işin özeti çıkarılır (ne tamamlandı, ne eksik)
 2. Ahmet'in telefonda test etmesi için komut veya URL verilir
 3. Ahmet onaylayana kadar "tamamlandı" denmez
-4. Onaydan sonra `docs/decisions.md` güncellenir (kritik kararlar varsa)
-5. `CLAUDE.md`'deki "Aktif paket" bölümü bir sonraki pakete geçirilir
+4. **TODO.md güncellenir:** kod tarafı işleri Claude `[T]`'ye çekebilir; `[T]` → `[x]` geçişi sadece Ahmet'in görünür onayından sonra
+5. Onaydan sonra `docs/decisions.md` güncellenir (kritik kararlar varsa)
+6. **`docs/status.md` güncellenir** — son güncelleme tarihi, aktif paket, son commit, engel, bir sonraki adım
+7. `CLAUDE.md`'deki "Aktif paket" bölümü bir sonraki pakete geçirilir
+
+### TODO.md güncelleme protokolü
+
+`TODO.md` durum kodu geçişlerinde uyulan kural:
+
+- `[ ]` → `[~]` — Claude tek başına yapabilir (devam ediyor)
+- `[~]` → `[T]` — Claude tek başına yapabilir (Ahmet'in test etmesi için bıraktı)
+- `[T]` → `[x]` — **SADECE Ahmet'in onay mesajından sonra** Claude değiştirir
+
+Bu protokol kural 2 (Rapor ≠ Gerçek) ve kural 5 (Tamamlandı yasağı) ile uyumludur. Claude tek başına `[x]` koyamaz.
 
 ---
 
