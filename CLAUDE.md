@@ -163,7 +163,7 @@ Tüm component'ler hem açık hem koyu modda test edilir. Tailwind `dark:` prefi
 
 **Şu anki paket:** Paket 3+4 — Yemek Detayı, Fotoğraf, Arama ve Filtreleme
 
-**Referans dosya:** `docs/packages.md` (Paket 3+4 bölümü) · `docs/prompts/paket-3-4.md` (yazılmamış — Paket 2 kapanış commit'i sonrası hazırlanacak)
+**Referans dosya:** `docs/packages.md` (Paket 3+4 bölümü) · `docs/prompts/paket-3-4.md` (başlangıç prompt'u hazır)
 
 **Önceki paket:** Paket 2 — kapandı 2026-04-25, telefon testi onaylı (Core Web Vitals LCP 0.13s · CLS 0.02 · INP 0ms hepsi yeşil; 11 kategori grid + kategori sayfası + dark/light otomatik+manuel+kalıcı toggle).
 
