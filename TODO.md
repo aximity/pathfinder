@@ -125,6 +125,7 @@
 
 ## Açık dış bağımlılıklar (Ahmet'e ait)
 
-- [ ] Kaya Palazzo PDF menüsünden gerçek 52 yemeği `menu.json`'a yapıştır (placeholder'ları değiştir) — Paket 2 öncesi şart değil, paralel ilerleyebilir
+- [x] Kaya Palazzo PDF menüsünden gerçek menüyü `menu.json`'a yapıştır — 2026-04-25 tamamlandı (60 placeholder → 64 gerçek yemek; ratatouille, mixed-sandwich, eggs-with-kavurma, chocolate-souffle PDF'te yok ama menüde, eklendi)
 - [x] Tailwind tema token kararları — Claude önerdi, Ahmet onayladı 2026-04-25
 - [x] Mockup 1 son hali — Claude metin spesifikasyon önerdi, Ahmet onayladı 2026-04-25
+- [~] Eksik yemek fotoğrafları — 37/64 (%58) tamam, 27 yemek hâlâ fotosuz. Liste: [docs/missing-photos.md](docs/missing-photos.md). Ahmet sonraki foto turunda sağlayacak.

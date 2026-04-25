@@ -11,15 +11,20 @@
 **Branch:** `main`
 **Remote:** `https://github.com/aximity/pathfinder.git`
 
-**Bekleyen Ahmet işleri:**
-- Paket 2 kapanış commit'inin atılması (Claude öneri sunacak)
-- (Bu session'da paralel) `reference/1203.pdf` okunup `menu.json` placeholder'ları gerçek 52 yemekle değiştirilecek
-- (Bu session'da paralel) `static/photos/` altındaki 43 WhatsApp jpeg'in yemek slug'larıyla eşleştirilmesi — Ahmet hangi fotoğrafın hangi yemeğe ait olduğunu söyleyecek (kural 7: tahminle iş yok)
+**Bu session'da yapılanlar:**
+- Paket 2 kapanış commit'i atıldı (3e0e872)
+- `reference/1203.pdf` okundu, `menu.json` 60 placeholder → 64 gerçek yemekle dolduruldu
+- 4 yeni yemek eklendi (PDF güncellenmemiş): ratatouille, mixed-sandwich (3 ekmek varyantı, launchbox/takeaway), eggs-with-kavurma, chocolate-souffle
+- PDF düzeltmeleri: roasted-tomato-soup mozzarella → kaşar, walnut-brownie default dondurma + opsiyonel sos
+- 83 WhatsApp foto işlendi: 38 dosya yemek slug'la rename, 45 silindi (duplicate, BTS, premium, çoklu sergi)
+- 3 foto PIL ile crop'landı: baklava (çoklu tabak'tan izole), lentil-soup ve roasted-tomato-soup (çift çorba fotosundan)
+- 37/64 yemek fotolu (%58); 27 yemek hâlâ fotosuz, liste `docs/missing-photos.md`'de
 
 **Bir sonraki adım:**
-1. Bu session içinde: PDF içeriği `menu.json`'a yapıştırılır (kategori bazlı batch)
-2. Bu session içinde: Fotoğraflar slug'la eşleştirilip `{dish_id}-01.webp` formatında yeniden adlandırılır, `menu.json`'da `photos` array'ine yol yazılır
-3. Yeni session: `docs/prompts/paket-3-4.md` ile Paket 3+4 başlatılır (yemek detay sayfası, gerçek arama, alerjen + diet filtresi, son baktıkların aktif)
+1. Bu turun commit'i atılır: "data: populate menu.json + 38 photos"
+2. Ahmet kalan 27 yemek için foto turu hazırlar (paralel)
+3. Foto turu tamamlanınca yeni session açılır
+4. Yeni session: `docs/prompts/paket-3-4.md` ile Paket 3+4 başlatılır (yemek detay sayfası, gerçek arama, alerjen + diet filtresi, son baktıkların aktif, fotoğraf entegrasyonu)
 
 **Paket 2'de alınan kritik kararlar (`docs/decisions.md` ADR-0014 → ADR-0015):**
 - Tailwind v4 `@theme` direktifiyle 4 semantic + 11 kategori accent token (CSS-first, JS config yok)
