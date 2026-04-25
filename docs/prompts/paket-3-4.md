@@ -80,20 +80,40 @@ Hatırlatmalar (kurallar):
 - TODO.md durum kodlarını sen güncelle: [ ] → [~] → [T]. [T] → [x]
   geçişini yapma; benim onayımı bekle.
 
-Eğer mockup 2 hazır değilse: kodlamaya geçmeden önce bana neyin
-eksik olduğunu sor. Sadece detay sayfası için minimum şu metin
-spesifikasyonunu istesem yeter:
+Mockup 2 spesifikasyonu Ahmet onaylı (2026-04-25):
 
-  - Üstte foto/placeholder konumu
-  - Başlık + kategori + fiyat hiyerarşisi
-  - Alerjen chip'leri pozisyonu (kullanıcı en görünür konumda istiyor)
-  - Diet flag chip'leri pozisyonu
-  - İçerik bölümü düzeni (ana/yan/sos/garnitür)
-  - Varyant grupları sunum (radio vs checkbox)
-  - Şef notu (chef_notes) kutusunun stil ve konumu
-  - Geri butonu davranışı
+1. **Foto:** üstte full-width, 4:3 oran. Foto yoksa SVG placeholder
+   (ADR-0009 fallback). lazy loading her img'de.
+2. **Chip sırası:** Alerjen chip'leri (kırmızı `bg-danger`) **diet flag
+   chip'lerinden önce gelir** — Ahmet "en görünür konumda" istedi
+   (PRD başarı kriteri 2). Diet flag chip'leri (yeşil `bg-success`)
+   alttaki satırda.
+3. **İçerik bölümü:** Tek liste — ana/yan/sos/garnitür **ayrı kart
+   değil**, tek bir component içinde alt başlıklarla (ana → yan
+   → sos → garnitür sırasıyla). Boş array'ler render edilmez.
+4. **Variant rendering otomatik:** `multi_select === true` →
+   checkbox, `multi_select === false` → radio. Etiketler `group`
+   alanından (örn. "Yumurta pişirme"). VariantOption obje formundaysa
+   (`{ label, price_override }`) fiyat farkı satır sonunda mini badge
+   olarak gösterilir.
+5. **Şef notu:** `chef_notes` boş değilse amber kutu (`bg-warning/10`,
+   `border-warning`) — içerik bölümünün altında, geri kalan metnin
+   üstünde durur. Boşsa kutu render edilmez (koşullu).
+6. **Geri butonu:** Paket 2'deki kategori sayfası deseninde — sayfa
+   üstünde, `<-Geri` ikonu + metin, `window.history.back()` (geçmiş
+   yoksa `/`'e fallback). Sticky DEĞİL — sayfayla birlikte kayar
+   (kategori sayfasında nasılsa öyle).
+7. **Son baktıkların güncellemesi:** Kullanıcı `/yemek/[id]` her
+   ziyaret ettiğinde recentStore.markVisited(id) çağrılır. Store son
+   10 ID tutar (LRU). Aynı ID tekrar açılırsa eski kayıt silinir,
+   yenisi en başa eklenir (duplicate olmaz). Ana sayfa "Son
+   baktıkların" bandı bu ID listesini menuStore.getById ile
+   detaylandırıp yatay scroll listesi olarak gösterir; en son ziyaret
+   edilen en solda.
 
-Bu spec olmadan detay sayfası yazılmaz.
+Bu spec yeterli — ek mockup veya görsele gerek yok. Hâlâ belirsiz
+gördüğün noktalar varsa (örn. fiyat görünümü, breadcrumb, related
+dishes vs.) bana sor, tahminle uydurma.
 ```
 
 ---
@@ -102,18 +122,18 @@ Bu spec olmadan detay sayfası yazılmaz.
 
 Bu prompt'u Claude Code'a göndermeden önce şunlardan en az **biri** hazır olmalı:
 
-### 1. Mockup 2 metin spesifikasyonu
+### 1. Mockup 2 metin spesifikasyonu — ✅ Ahmet onayladı (2026-04-25)
 
-Yemek detay sayfası bu paketin en görsel kısmı. Görselden kod üretmek **yasak** (kural 7). Bunun yerine:
+Spec prompt'un içine embed edildi (yukarıda 7 madde). Yeni session bunu okuduğunda mockup hakkında ek soru sormaz, doğrudan kodlamaya geçer.
 
-- Foto üstte mi, yoksa kart başlığının yanında mı? Boyut (full-width, square, 4:3)?
-- Başlık altında alerjen chip'leri mi diet flag chip'leri mi önce gelir? (Ahmet'in önceliği "alerjen en görünür")
-- "İçerik" bölümü ana/yan/sos/garnitür için ayrı kart mı, yoksa tek liste mi?
-- Variant grupları (örn. Yumurta pişirme: Sahanda/Omlet/Rafadan) checkbox mı radio mu? Multi-select olanlar için checkbox kesin.
-- Şef notu var mı yok mu? (chef_notes boş olabilir, Paket 2'de düzenlendi — Palazzo Kahvaltı'da boş, Ratatouille'de "Yancı olarak ana yemeklerin yanında")
-- Geri butonu sticky mi yoksa içerik üstünde mi?
-
-Bu sorulara metin yanıtlarını ver, Claude Code'a o yanıtlarla özet çıkar.
+Onaylanan kararlar özet:
+- Foto üstte, full-width 4:3
+- Alerjen chip'leri diet flag'lerden önce (en görünür)
+- İçerik tek liste (ana/yan/sos/garnitür alt başlıklarla)
+- Variant: multi_select boolean'ına göre checkbox/radio otomatik
+- Şef notu amber kutu, koşullu render
+- Geri butonu Paket 2 deseninde, sticky değil
+- Son baktıkların: LRU son 10, en son ziyaret en solda
 
 ### 2. Eksik 27 yemek fotoğrafı (paralel ilerleyebilir)
 
