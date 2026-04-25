@@ -5,6 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Pathfinder — mutfak-öncelikli dijital menü referansı" />
     <link rel="icon" href="%sveltekit.assets%/favicon.svg" type="image/svg+xml" />
+    <script>
+      // FOUC önleme — sayfa boyanmadan ÖNCE doğru tema class'ını <html>'e ekle.
+      // localStorage'da kayıt varsa onu kullan; yoksa sistem tercihine göre
+      // başla. Hiçbir şey yapamazsa light kalır (color-scheme zaten light).
+      // Bu inline script bloklayıcıdır; bu yüzden `defer` veya `async` yok.
+      (function () {
+        try {
+          var stored = localStorage.getItem('pf:theme');
+          var systemDark =
+            window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var dark = stored ? stored === 'dark' : systemDark;
+          if (dark) document.documentElement.classList.add('dark');
+        } catch (e) {
+          // localStorage erişilemezse (private mode vs.) light fallback yeter
+        }
+      })();
+    </script>
     %sveltekit.head%
   </head>
   <body data-sveltekit-preload-data="hover">

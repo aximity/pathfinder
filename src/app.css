@@ -1,1 +1,70 @@
 @import 'tailwindcss';
+
+/*
+ * Tailwind v4 — class-based dark mode.
+ *
+ * Default Tailwind v4 dark variant'ı `prefers-color-scheme` kullanır.
+ * Bizim akışımız: ilk yüklemede sistemden başla, kullanıcı toggle'a
+ * basınca tercihi `pf:theme` localStorage anahtarına yaz ve <html>
+ * elementine `dark` class'ı ekle/kaldır. Bu yüzden dark variant'ı
+ * class tabanlı olarak yeniden tanımlıyoruz.
+ *
+ * `:where()` ile özgüllüğü düşük tutarız — utility'lerin daha özgül
+ * stilleri override etmesi için. `&:where(.dark, .dark *)` hem html.dark
+ * üzerine düşen utility'leri hem de descendant'larında düşenleri yakalar.
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Tema token'ları — Paket 2'de belirlendi (ADR-0011 v4 CSS-first).
+ *
+ * - Semantic renkler (danger / warning / success / info): light arka plan
+ *   üzerinde Tailwind ton-600, dark arka plan üzerinde ton-400 — WCAG AA
+ *   kontrast kuralına uygun.
+ * - Kategori accent renkleri (cat-*): menu.json'daki accent_color hex'leri.
+ *   Component'te `bg-cat-pizza`, `border-cat-dessert` gibi utility olarak
+ *   kullanılır. Dark mode'da aynı hex korunur — kategori kimliği tema
+ *   değişiminde sabit kalır.
+ *
+ * NEDEN @theme: v4'te token tanımının native CSS yöntemi. Tailwind
+ * `--color-foo` değişkenini görür ve `bg-foo`, `text-foo`, `border-foo`
+ * utility'lerini otomatik üretir.
+ */
+@theme {
+  --color-danger: #dc2626;
+  --color-danger-dark: #f87171;
+  --color-warning: #d97706;
+  --color-warning-dark: #fbbf24;
+  --color-success: #16a34a;
+  --color-success-dark: #4ade80;
+  --color-info: #2563eb;
+  --color-info-dark: #60a5fa;
+
+  --color-cat-set-breakfast: #f0997b;
+  --color-cat-a-la-carte-breakfast: #ef9f27;
+  --color-cat-salads-appetizers: #97c459;
+  --color-cat-soups: #ba7517;
+  --color-cat-sandwich-burger: #7f77dd;
+  --color-cat-pizza: #e24b4a;
+  --color-cat-pasta: #d85a30;
+  --color-cat-seafood: #378add;
+  --color-cat-meat-chicken: #993c1d;
+  --color-cat-dessert: #d4537e;
+  --color-cat-kids-menu: #5dcaa5;
+}
+
+/*
+ * color-scheme — tarayıcının form kontrol ve scrollbar'larının
+ * tema ile uyumlu görünmesini sağlar (input caret rengi, dropdown vb.).
+ * Body arka planı/metin rengi layout component'inde Tailwind utility ile
+ * uygulanır (ADR-0007 @apply yasağı).
+ */
+@layer base {
+  html {
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+}

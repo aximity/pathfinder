@@ -8,6 +8,63 @@ Durum: `kabul-edildi`, `değiştirildi`, `iptal`
 
 ---
 
+## [ADR-0015] Dark mode — iki durumlu (light/dark) + FOUC önleyici inline script
+
+**Tarih:** 2026-04-25
+**Durum:** kabul-edildi
+
+### Karar
+
+Pathfinder iki tema durumu sunar: `light` ve `dark`. "system" üçüncü seçenek değildir — sadece **varsayılan başlangıç noktası** olarak kullanılır. Akış şöyle: ilk yüklemede localStorage'da `pf:theme` yoksa `prefers-color-scheme` okunur; kullanıcı toggle'a basınca seçim `pf:theme`'e yazılır ve sistem değişse de bu seçim kalır.
+
+FOUC (Flash of Unstyled Content) önlemek için `app.html` içine sayfa boyanmadan önce çalışan **bloklayıcı inline script** eklenmiştir: localStorage veya sistem tercihinden `dark` class'ı `<html>`'e set edilir.
+
+### Gerekçe
+
+1. **Kullanıcı netliği:** Üç durumlu (`light | dark | system`) UI'da ya üç ikon (kafa karışıklığı) ya gizli üçüncü mod (kullanıcı bulamaz) demektir; iki durumlu daha temiz
+2. **FOUC önleme:** SvelteKit prerender'lı statik HTML üretir; `<html>` class'ı SSR sırasında belirsiz. İnline script blocking olduğu için body render'dan önce çalışır, kullanıcı flash görmez
+3. **localStorage senkronu:** ADR-0003 — store üzerinden okuma/yazma; component doğrudan localStorage veya documentElement'e dokunmaz
+4. **WCAG AA:** Tüm semantic renkler (danger / warning / success / info) hem light hem dark zeminde 4.5:1 kontrast oranını sağlar (Tailwind 600/400 ton seçimi)
+
+### Terk edilen
+
+- **Üç durumlu (system seçeneği görünür):** UI karmaşası, kullanıcı en sık kullanacağı dark/light için fazla tıklama
+- **`media` query stratejisi (sadece sistem tercihi, manuel override yok):** Kabul kriteri "manuel toggle çalışıyor" şartını karşılamaz
+- **CSS-only toggle (checkbox hack):** Erişilebilirlik zayıf, klavye kullanıcısı için karmaşık
+- **`prefers-color-scheme` JS yerine sadece CSS:** Manuel override için JS şart
+
+---
+
+## [ADR-0014] Tailwind v4 `@theme` token stratejisi + class-based dark variant
+
+**Tarih:** 2026-04-25
+**Durum:** kabul-edildi
+
+### Karar
+
+Paket 2'de Tailwind v4 `@theme` direktifi `src/app.css` içinde kullanıldı. **15 token** tanımlandı:
+- 4 semantic renk × 2 varyasyon (light/dark çift): `danger`, `danger-dark`, `warning`, `warning-dark`, `success`, `success-dark`, `info`, `info-dark`
+- 11 kategori accent rengi (cat-*): `menu.json`'daki `accent_color` hex'leri birebir kopyalandı
+
+Default Tailwind v4 dark variant'ı `prefers-color-scheme` kullanır. ADR-0015'teki manuel override için **class-based dark variant**'a geçildi: `@custom-variant dark (&:where(.dark, .dark *));`
+
+Kategori accent class'ları için `src/lib/utils/category-colors.ts` içinde **literal switch-case map** oluşturuldu — `bg-cat-${categoryId}` gibi dinamik string concat Tailwind JIT tarafından tree-shake'te atılır, switch-case literal class'ları compiler görür.
+
+### Gerekçe
+
+1. **CSS-first uyumu:** ADR-0011'de tercih edilen v4 yaklaşımı; JS config gereksiz
+2. **WCAG AA kontrast:** light arka planda Tailwind 600 ton (`#dc2626` vb.), dark arka planda Tailwind 400 ton (`#f87171` vb.) — okunabilirlik testten geçer
+3. **Kategori kimliği sabit:** 11 kategori accent dark mode'da da aynı hex — kullanıcı tema değiştirince "pizza kırmızısı" değişmez, kategori tanınırlığı korunur
+4. **JIT compatibility:** Literal switch-case Tailwind compiler için keşfedilebilir; dinamik concat yerine bu disiplin Paket 3+4'te chip ve badge utility'lerinde de kullanılacak
+
+### Terk edilen
+
+- **Inline `style="background-color: var(--color-cat-pizza)"`:** Çalışır ama Tailwind utility prensibinden uzak; dark mode varyant ekleme zor
+- **JS config (`tailwind.config.js`):** v4'te gereksiz; ADR-0011 zaten reddetmiş
+- **Ayrı `dark-` prefix'li token (kategori için):** Paket 2'de gerek yok — kategori rengi dark mode'da aynı kalıyor; gerekirse Paket 3+4'te `--color-cat-pizza-dark` eklenebilir
+
+---
+
 ## [ADR-0013] Doc tracking dosyaları — TODO + PRD + status, MVP/PLAN yok
 
 **Tarih:** 2026-04-25

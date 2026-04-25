@@ -14,3 +14,7 @@ Thumbs.db
 !.vscode/settings.json
 !.vscode/extensions.json
 .idea
+
+# Reference materyal — PDF menüsü, briefing dökümanları (12+ MB)
+# Bunlar Ahmet'in lokal çalışma klasörü; repo'ya gitmez
+/reference/

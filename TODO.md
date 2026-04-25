@@ -1,6 +1,6 @@
 # Pathfinder TODO
 
-> **Aktif paket:** Paket 2 — UI İskelet ve Navigation (yeni session ile başlanacak)
+> **Aktif paket:** Paket 3+4 — Yemek Detayı, Fotoğraf, Arama ve Filtreleme (yeni session ile başlanacak)
 > **Son güncelleme:** 2026-04-25
 
 ## Durum kodları
@@ -51,20 +51,51 @@
 
 ---
 
-## Paket 2 — UI İskelet ve Navigation
+## Paket 2 — UI İskelet ve Navigation ✅
 
-> `docs/prompts/paket-2.md` ile yeni session açıldığında detaylı checkbox listesi buraya çıkarılacak.
+> Ahmet 2026-04-25'te telefon testini onayladı: 11 kategori grid, kategori sayfası, dark/light otomatik+manuel+kalıcı, alert'ler, Core Web Vitals hepsi yeşil.
 
-Üst seviye kapsam (`docs/packages.md` Paket 2'den):
+### Kararlar (Ahmet onaylı, 2026-04-25)
 
-- [ ] Tailwind tema konfigürasyonu — `tailwind.config.js` + custom token'lar (renk, spacing, radius)
-- [ ] Dark mode — `media` stratejisi (sistem) + manuel toggle (localStorage `pf:theme`)
-- [ ] `src/routes/+layout.svelte` — header (logo, arama ikonu placeholder, tema toggle), footer
-- [ ] Ana sayfa — arama çubuğu placeholder + kategori grid (11 kart, mobil 2 sütun, tablet 3 sütun) + "Son baktıkların" bandı (boş)
-- [ ] `src/routes/kategori/[id]/+page.svelte` — o kategorinin yemek kartları (foto placeholder, ad, fiyat, kritik chip), back navigation
-- [ ] Component'ler: `CategoryCard`, `DishCard`, `SearchBar` (placeholder), `ThemeToggle`, `Header`
-- [ ] Telefon testi: kategori grid → kategori sayfası → geri navigation, dark/light otomatik + manuel toggle
-- [ ] Lighthouse Mobile Performance 90+
+- Tailwind tema token'ları Claude tarafından önerildi, Ahmet onayladı: semantic 4 renk (danger/warning/success/info, light=Tailwind 600 / dark=Tailwind 400) + 11 kategori accent (`menu.json` `accent_color`'larından) `@theme` direktifiyle CSS-first
+- Dark mode iki durumlu (light/dark, system üçüncü değil — sadece varsayılan başlangıç)
+- Mockup 1 metin spesifikasyonu Claude tarafından önerildi, Ahmet onayladı (sticky header, kategori kartı = renk şeridi + ad + sayım, kategori sayfası = foto placeholder + ad + açıklama + fiyat, yemek kartı tıklanınca alert)
+
+### Kod işleri
+
+- [x] `src/app.css` — `@import 'tailwindcss'` + `@custom-variant dark` (class-based) + `@theme` ile 4 semantic + 11 kategori accent token
+- [x] `src/app.html` — FOUC önleyici inline script (localStorage `pf:theme` veya `prefers-color-scheme` ile ilk render'da `dark` class'ı set)
+- [x] `src/lib/stores/theme.svelte.ts` — Svelte 5 runes ile reactive `themeStore.current` + `toggle()` + `set()`, localStorage senkronu
+- [x] `src/lib/utils/category-colors.ts` — kategori ID → `bg-cat-*` utility class map (Tailwind JIT görsün diye literal switch)
+- [x] `src/lib/components/ThemeToggle.svelte` — güneş/ay ikonu, 44×44, klavye erişilebilir
+- [x] `src/lib/components/SearchBar.svelte` — disabled input placeholder ("Yemek ara… (yakında)")
+- [x] `src/lib/components/Header.svelte` — sticky, logo + arama ikonu (alert: "yakında") + ThemeToggle
+- [x] `src/lib/components/CategoryCard.svelte` — accent şeridi + ad + yemek sayısı, `<a>` link, ≥88 px
+- [x] `src/lib/components/DishCard.svelte` — 96×96 SVG placeholder + ad/açıklama (truncate) + fiyat, button (alert: "yemek detayı yakında")
+- [x] `src/routes/+layout.svelte` — Header + main slot + footer wrapper, dark/light Tailwind utility
+- [x] `src/routes/+page.svelte` — SearchBar + 11 kategori grid (mobil 2 / tablet 3 sütun) + boş "Son baktıkların" bandı; menuStore.window aç davranışı korundu
+- [x] `src/routes/kategori/[id]/+page.svelte` — geri butonu + kategori başlığı + yemek listesi (1 / 2 sütun) + 404 graceful
+- [x] `src/routes/kategori/[id]/+page.ts` — static prerender için `entries()` fonksiyonu (11 kategori ID)
+
+### Build/typecheck
+
+- [x] `npm run check` → 0 hata, 0 uyarı
+- [x] `npm run build` → 11 kategori sayfası + ana sayfa prerender'lı, CSS 18.67 kB / gzip 4.42 kB
+
+### Telefon testi (Ahmet onayı 2026-04-25)
+
+- [x] `npm run dev` çalışıyor → telefondan `http://<bilgisayar-IP>:5173`
+- [x] Ana sayfada 11 kategori grid (mobilde 2 sütun) görünüyor + her kart accent renk şeridi + "X yemek" sayısı
+- [x] Bir kategori karta dokun → `/kategori/[id]` açılıyor
+- [x] Kategori sayfasında o kategorinin yemekleri kart formatında
+- [x] Tarayıcı geri tuşu → ana sayfa, scroll pozisyonu makul
+- [x] Telefon sistem teması light/dark değiştir → uygulama otomatik geçiş yapıyor (ilk açılış)
+- [x] Header'daki tema toggle → manuel light↔dark, tarayıcı kapatıp açınca seçim hatırlanıyor
+- [x] Arama büyüteç ikonuna dokun → "Arama özelliği yakında aktif olacak" alert
+- [x] Yemek kartına dokun → "Yemek detayı yakında aktif olacak" alert
+- [x] Hiçbir tıklanabilir element 44×44 px'den küçük değil
+- [x] Local Core Web Vitals: LCP 0.13s · CLS 0.02 · INP 0ms (hepsi yeşil) — Performance 90+ kriteri karşılandı
+- [x] Boş "Son baktıkların" bandı gri kesik kenarlı kutu içinde "Yemek detayına baktıkça burada görünecek"
 
 ---
 
@@ -95,5 +126,5 @@
 ## Açık dış bağımlılıklar (Ahmet'e ait)
 
 - [ ] Kaya Palazzo PDF menüsünden gerçek 52 yemeği `menu.json`'a yapıştır (placeholder'ları değiştir) — Paket 2 öncesi şart değil, paralel ilerleyebilir
-- [ ] Tailwind tema token kararları (semantic renkler: danger/success/warning + 11 kategori accent) — Paket 2 başlangıcında netleşmesi gerekir
-- [ ] Mockup 1 son hali (ana sayfa + kategori sayfası) — Paket 2'nin görsel referansı
+- [x] Tailwind tema token kararları — Claude önerdi, Ahmet onayladı 2026-04-25
+- [x] Mockup 1 son hali — Claude metin spesifikasyon önerdi, Ahmet onayladı 2026-04-25

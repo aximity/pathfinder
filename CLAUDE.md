@@ -161,11 +161,13 @@ Tüm component'ler hem açık hem koyu modda test edilir. Tailwind `dark:` prefi
 
 ## Aktif paket
 
-**Şu anki paket:** Paket 2 — UI İskelet ve Navigation
+**Şu anki paket:** Paket 3+4 — Yemek Detayı, Fotoğraf, Arama ve Filtreleme
 
-**Referans dosya:** `docs/packages.md` (Paket 2 bölümü) · `docs/prompts/paket-2.md` (başlangıç prompt'u)
+**Referans dosya:** `docs/packages.md` (Paket 3+4 bölümü) · `docs/prompts/paket-3-4.md` (yazılmamış — Paket 2 kapanış commit'i sonrası hazırlanacak)
 
-**Önceki paket:** Paket 1 — kapandı 2026-04-25, telefon testi ve GitHub repo oluşturma onaylı (commit history: `a049ed5`, `63567fe`, ...).
+**Önceki paket:** Paket 2 — kapandı 2026-04-25, telefon testi onaylı (Core Web Vitals LCP 0.13s · CLS 0.02 · INP 0ms hepsi yeşil; 11 kategori grid + kategori sayfası + dark/light otomatik+manuel+kalıcı toggle).
+
+**Paralel iş (yeni session açmadan, bu oturumda):** `reference/1203.pdf` okunup `menu.json`'daki 52 placeholder gerçek yemekle değiştirilecek; `static/photos/` altındaki 43 WhatsApp jpeg slug'larla eşleştirilip `{dish_id}-01.webp` olarak yeniden adlandırılacak (Ahmet hangi fotoğrafın hangi yemeğe ait olduğunu söyleyecek — kural 7 gereği tahminle iş yok). ADR-0012: "Paket 2 öncesi şart değil, paralel ilerleyebilir." Paket 3+4 UI işleri yeni session'da başlayacak.
 
 Her paket başında bu bölüm güncellenir. Claude Code paket başlamadan önce ilgili paket tanımını okur ve Ahmet'e Türkçe özet çıkarır, onay bekler.
 
